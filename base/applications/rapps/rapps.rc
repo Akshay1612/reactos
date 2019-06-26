@@ -41,6 +41,7 @@ IDI_CAT_SCIENCE ICON "res/cats/science.ico"
 IDI_CAT_TOOLS ICON "res/cats/tools.ico"
 IDI_CAT_VIDEO ICON "res/cats/video.ico"
 IDI_SELECTEDFORINST ICON "res/select.ico"
+IDI_DOWNLOAD ICON "res/download.ico"
 
 /* Accelerators -- key bindings */
 HOTKEYS ACCELERATORS

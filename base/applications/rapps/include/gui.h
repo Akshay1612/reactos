@@ -15,6 +15,8 @@ VOID SetStatusBarText(const ATL::CStringW& szText);
 INT ListViewAddItem(INT ItemIndex, INT IconIndex, const ATL::CStringW& Name, LPARAM lParam);
 VOID NewRichEditText(const ATL::CStringW& szText, DWORD flags);
 VOID InsertRichEditText(const ATL::CStringW& szText, DWORD flags);
+BOOL IsDownloadfun();
+
 CAvailableApps * GetAvailableApps();
 extern HWND hListView;
 extern ATL::CStringW szSearchPattern;

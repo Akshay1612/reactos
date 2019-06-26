@@ -25,6 +25,7 @@
 #define SEARCH_TIMER_ID 'SR'
 #define LISTVIEW_ICON_SIZE 24
 #define TREEVIEW_ICON_SIZE 24
+bool CHECK_DOWNLOAD;
 
 HWND hListView = NULL;
 
@@ -1474,12 +1475,14 @@ private:
             {
                 if (nSelectedApps > 0)
                 {
-                    CDownloadManager::DownloadListOfApplications(m_AvailableApps.GetSelected());
+                    CHECK_DOWNLOAD = TRUE;
+		    CDownloadManager::DownloadListOfApplications(m_AvailableApps.GetSelected());
                     UpdateApplicationsList(-1);
                     m_ListView->SetSelected(-1, FALSE);
                 }
                 else if (CDownloadManager::DownloadApplication(m_ListView->GetSelectedData()))
                 {
+			CHECK_DOWNLOAD = TRUE;
                     UpdateApplicationsList(-1);
                 }
 
@@ -1490,13 +1493,14 @@ private:
 			{
 				if (nSelectedApps > 0)
 				{
-					//TODO: If Download then Dont Open Application
+					CHECK_DOWNLOAD = FALSE;
 				CDownloadManager::DownloadListOfApplications(m_AvailableApps.GetSelected());
 					UpdateApplicationsList(-1);
 					m_ListView->SetSelected(-1, FALSE);
 			}
 				else if (CDownloadManager::DownloadApplication(m_ListView->GetSelectedData()))
 				{
+				CHECK_DOWNLOAD = FALSE;
 				UpdateApplicationsList(-1);
 				}
 
@@ -1849,4 +1853,9 @@ VOID NewRichEditText(const ATL::CStringW& szText, DWORD flags)
 VOID InsertRichEditText(const ATL::CStringW& szText, DWORD flags)
 {
     InsertRichEditText(szText.GetString(), flags);
+}
+
+BOOL IsDownloadfun()
+{	
+	return CHECK_DOWNLOAD;
 }

@@ -11,6 +11,7 @@ BEGIN
     POPUP "&Programs"
     BEGIN
         MENUITEM "&Install\tCtrl+Enter", ID_INSTALL
+        MENUITEM "&Download",ID_DOWNLOAD
         MENUITEM "&Uninstall\tCtrl+Del", ID_UNINSTALL
         MENUITEM "&Modify", ID_MODIFY
         MENUITEM SEPARATOR
@@ -178,6 +179,7 @@ BEGIN
     IDS_CAT_SCIENCE "Science"
     IDS_CAT_TOOLS "Tools"
     IDS_CAT_VIDEO "Video"
+    IDS_DOWNLOAD "Downloaded"
 END
 
 STRINGTABLE
@@ -185,6 +187,7 @@ BEGIN
     IDS_APPTITLE "ReactOS Applications Manager"
     IDS_SEARCH_TEXT "Search…"
     IDS_INSTALL "Install"
+    IDS_DOWNLOAD_BUT "Download"
     IDS_UNINSTALL "Uninstall"
     IDS_MODIFY "Modify"
     IDS_APPS_COUNT "Applications count: %d; Selected: %d"

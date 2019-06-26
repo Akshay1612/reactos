@@ -875,7 +875,7 @@ DWORD WINAPI CDownloadManager::ThreadFunc(LPVOID param)
 
 run:
         DownloadsListView.SetDownloadStatus(iAppId, DLSTATUS_WAITING_INSTALL);
-
+        if (IsDownloadfun()) {
         // run it
         if (!bCab)
         {
@@ -904,6 +904,7 @@ run:
             {
                 MessageBox_LoadString(hMainWnd, IDS_UNABLE_TO_INSTALL);
             }
+        }
         }
 
 end:

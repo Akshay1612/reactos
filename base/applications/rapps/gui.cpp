@@ -215,6 +215,7 @@ class CMainToolbar :
     WCHAR szUninstallBtn[MAX_STR_LEN];
     WCHAR szModifyBtn[MAX_STR_LEN];
     WCHAR szSelectAll[MAX_STR_LEN];
+    WCHAR szDownloadBtn[MAX_STR_LEN];
 
     VOID AddImageToImageList(HIMAGELIST hImageList, UINT ImageIndex)
     {
@@ -311,6 +312,7 @@ public:
             {  1, ID_UNINSTALL, TBSTATE_ENABLED, BTNS_BUTTON | BTNS_AUTOSIZE, { 0 }, 0, (INT_PTR) szUninstallBtn    },
             {  2, ID_MODIFY,    TBSTATE_ENABLED, BTNS_BUTTON | BTNS_AUTOSIZE, { 0 }, 0, (INT_PTR) szModifyBtn       },
             {  3, ID_CHECK_ALL, TBSTATE_ENABLED, BTNS_BUTTON | BTNS_AUTOSIZE, { 0 }, 0, (INT_PTR) szSelectAll       },
+            {  4, ID_DOWNLOAD, TBSTATE_ENABLED, BTNS_BUTTON | BTNS_AUTOSIZE,  { 0 }, 0, (INT_PTR) szDownloadBtn },
             { -1, 0,            TBSTATE_ENABLED, BTNS_SEP,                    { 0 }, 0, 0                           },
             {  4, ID_REFRESH,   TBSTATE_ENABLED, BTNS_BUTTON | BTNS_AUTOSIZE, { 0 }, 0, 0                           },
             {  5, ID_RESETDB,   TBSTATE_ENABLED, BTNS_BUTTON | BTNS_AUTOSIZE, { 0 }, 0, 0                           },
@@ -321,6 +323,7 @@ public:
 
         LoadStringW(hInst, IDS_INSTALL, szInstallBtn, _countof(szInstallBtn));
         LoadStringW(hInst, IDS_UNINSTALL, szUninstallBtn, _countof(szUninstallBtn));
+        LoadStringW(hInst, IDS_DOWNLOAD_BUT , szDownloadBtn , _countof(szDownloadBtn));
         LoadStringW(hInst, IDS_MODIFY, szModifyBtn, _countof(szModifyBtn));
         LoadStringW(hInst, IDS_SELECT_ALL, szSelectAll, _countof(szSelectAll));
 
@@ -784,7 +787,7 @@ private:
         hRootItemInstalled = AddCategory(TVI_ROOT, IDS_INSTALLED, IDI_CATEGORY);
         AddCategory(hRootItemInstalled, IDS_APPLICATIONS, IDI_APPS);
         AddCategory(hRootItemInstalled, IDS_UPDATES, IDI_APPUPD);
-
+        AddCategory(TVI_ROOT,IDS_DOWNLOAD,IDI_CAT_DOWNLOAD);
         AddCategory(TVI_ROOT, IDS_SELECTEDFORINST, IDI_SELECTEDFORINST);
 
         hRootItemAvailable = AddCategory(TVI_ROOT, IDS_AVAILABLEFORINST, IDI_CATEGORY);
@@ -1071,6 +1074,10 @@ private:
                     case IDS_UPDATES:
                         UpdateApplicationsList(ENUM_UPDATES);
                         break;
+                        
+                    case IDS_DOWNLOAD:
++						UpdateApplicationsList(ENUM_ALL_DOWNLOAD);
++						break;
 
                     case IDS_AVAILABLEFORINST:
                         UpdateApplicationsList(ENUM_ALL_AVAILABLE);
@@ -1150,6 +1157,7 @@ private:
                 {
                     EnableMenuItem(mainMenu, ID_REGREMOVE, MF_ENABLED);
                     EnableMenuItem(mainMenu, ID_INSTALL, MF_GRAYED);
+                    EnableMenuItem(mainMenu, ID_DOWNLOAD, MF_GRAYED);
                     EnableMenuItem(mainMenu, ID_UNINSTALL, MF_ENABLED);
                     EnableMenuItem(mainMenu, ID_MODIFY, MF_ENABLED);
 
@@ -1167,6 +1175,7 @@ private:
                 {
                     EnableMenuItem(mainMenu, ID_REGREMOVE, MF_GRAYED);
                     EnableMenuItem(mainMenu, ID_INSTALL, MF_ENABLED);
+                    EnableMenuItem(mainMenu, ID_DOWNLOAD, MF_ENABLED);
                     EnableMenuItem(mainMenu, ID_UNINSTALL, MF_GRAYED);
                     EnableMenuItem(mainMenu, ID_MODIFY, MF_GRAYED);
 
@@ -1476,7 +1485,24 @@ private:
 
             }
             break;
+        case ID_DOWNLOAD:
+			if (IsAvailableEnum(SelectedEnumType))
+			{
+				if (nSelectedApps > 0)
+				{
+					//TODO: If Download then Dont Open Application
+				CDownloadManager::DownloadListOfApplications(m_AvailableApps.GetSelected());
+					UpdateApplicationsList(-1);
+					m_ListView->SetSelected(-1, FALSE);
+			}
+				else if (CDownloadManager::DownloadApplication(m_ListView->GetSelectedData()))
+				{
+				UpdateApplicationsList(-1);
+				}
 
+			}
+			break;
+        
         case ID_UNINSTALL:
             if (UninstallApplication(-1, FALSE))
                 UpdateApplicationsList(-1);
